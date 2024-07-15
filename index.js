@@ -1,13 +1,15 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
-const mongoose = require('mongoose');
 const port = process.env.PORT || 8888;
+const routerV1 = require('./src/routes/v1');
 const cookieParser = require('cookie-parser');
+const mongooseConnect = require('./src/database/mongooseConnect');
 const cors = require('cors');
 
 app.use(cookieParser());
 app.use(express.json());
+app.use(routerV1);
 
 app.get('/health', (_, res) => {
   res.json({ message: 'Server health is fine' });
@@ -16,8 +18,7 @@ app.get('/', (_, res) => {
   res.json({ message: 'Server is working fine' });
 });
 
-mongoose
-  .connect(process.env.URI)
+mongooseConnect(process.env.URI)
   .then(() => {
     console.log(
       'Pinged your deployment. You successfully connected to MongoDB!'
