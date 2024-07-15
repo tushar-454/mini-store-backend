@@ -6,10 +6,12 @@ const routerV1 = require('./src/routes/v1');
 const cookieParser = require('cookie-parser');
 const mongooseConnect = require('./src/database/mongooseConnect');
 const cors = require('cors');
+const globalError = require('./src/error/globalError');
 
 app.use(cookieParser());
 app.use(express.json());
 app.use(routerV1);
+app.use(globalError);
 
 app.get('/health', (_, res) => {
   res.json({ message: 'Server health is fine' });
