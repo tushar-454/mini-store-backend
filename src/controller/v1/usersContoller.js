@@ -6,7 +6,12 @@ const usersServices = require('../../services/users');
 const createUser = async (req, res) => {
   try {
     const { name, email, phone, address, city, area } = req.body;
-    const user = await usersServices.createUser({
+    let user = await usersServices.findUserByProperty('email', email);
+    if (user) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    user = await usersServices.createUser({
       name,
       email,
       phone,
