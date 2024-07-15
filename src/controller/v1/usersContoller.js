@@ -28,4 +28,22 @@ const createUser = async (req, res, next) => {
   }
 };
 
-module.exports = { createUser };
+/**
+ * get a user from the database
+ */
+
+const getUser = async (req, res, next) => {
+  try {
+    const { email } = req.params;
+    const user = await usersServices.findUserByProperty('email', email);
+    if (!user) {
+      res.status(404).json({ message: 'User not found!', data: {} });
+      throw error('User not found!', 404);
+    }
+    res.status(200).json({ message: 'User found successfully', data: user });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { createUser, getUser };
