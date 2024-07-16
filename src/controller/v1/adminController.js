@@ -1,4 +1,5 @@
 const usersServices = require('../../services/users');
+const productServices = require('../../services/product');
 
 /**
  * get all users from the database its for admin
@@ -60,4 +61,47 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllUsers, getUser, deleteUser };
+/**
+ * add a product to the database
+ */
+const addProduct = async (req, res, next) => {
+  try {
+    const {
+      name,
+      category,
+      isStock,
+      isNew,
+      price,
+      discount,
+      description,
+      image,
+      type,
+      productDetails,
+      productWarrenty,
+      returnPolicy,
+    } = req.body;
+    const product = await productServices.createProduct({
+      name,
+      category,
+      isStock,
+      isNew,
+      price,
+      discount,
+      description,
+      image,
+      type,
+      productDetails,
+      productWarrenty,
+      returnPolicy,
+    });
+    res.status(201).json({
+      status: 201,
+      message: 'Product added successfully',
+      data: product,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { getAllUsers, getUser, deleteUser, addProduct };
