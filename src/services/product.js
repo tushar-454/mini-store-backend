@@ -43,4 +43,12 @@ const findProductByProperty = (key, value) => {
   return Product.findOne({ [key]: value });
 };
 
-module.exports = { createProduct, findAllProducts, findProductByProperty };
+// delete a product
+const deleteProduct = (id) => Product.findByIdAndDelete(id);
+
+module.exports = {
+  createProduct,
+  findAllProducts,
+  findProductByProperty,
+  deleteProduct,
+};

@@ -7,5 +7,6 @@ router.delete('/user/:email', adminController.deleteUser);
 router.get('/product/:id', adminController.getProduct);
 router.get('/products', adminController.getAllProducts);
 router.post('/products', adminController.addProduct);
+router.delete('/product/:id', adminController.deleteProduct);
 
 module.exports = router;

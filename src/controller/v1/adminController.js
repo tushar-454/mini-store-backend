@@ -148,6 +148,30 @@ const getProduct = async (req, res, next) => {
   }
 };
 
+/**
+ * delete a product by id
+ */
+
+const deleteProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const product = await productServices.findProductByProperty('_id', id);
+    if (!product) {
+      res
+        .status(404)
+        .json({ status: 404, message: 'Product not found!', data: {} });
+    }
+    await productServices.deleteProduct(product._id);
+    res.status(200).json({
+      status: 200,
+      message: 'Product deleted successfully',
+      data: product,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUser,
@@ -155,4 +179,5 @@ module.exports = {
   addProduct,
   getAllProducts,
   getProduct,
+  deleteProduct,
 };
