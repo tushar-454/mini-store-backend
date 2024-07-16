@@ -26,4 +26,13 @@ const findAllUsers = () => User.find();
 // delete user by email/_id
 const deleteUser = (id) => User.findByIdAndDelete(id);
 
-module.exports = { createUser, findUserByProperty, findAllUsers, deleteUser };
+// update user by _id
+const updateUser = (id, data) => User.updateOne({ _id: id }, data);
+
+module.exports = {
+  createUser,
+  findUserByProperty,
+  findAllUsers,
+  deleteUser,
+  updateUser,
+};

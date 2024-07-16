@@ -64,4 +64,30 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-module.exports = { createUser, getUser, deleteUser };
+/**
+ * update a user in the database
+ */
+const updateUser = async (req, res, next) => {
+  try {
+    const { phone, address, city, area } = req.body;
+    const { id } = req.params;
+    const user = await usersServices.findUserByProperty('_id', id);
+    if (!user) {
+      res.status(404).json({ message: 'User not found!', data: {} });
+      throw error('User not found!', 404);
+    }
+    const updatedUser = await usersServices.updateUser(user._id, {
+      phone,
+      address,
+      city,
+      area,
+    });
+    res
+      .status(200)
+      .json({ message: 'User updated successfully', data: updatedUser });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { createUser, getUser, deleteUser, updateUser };
