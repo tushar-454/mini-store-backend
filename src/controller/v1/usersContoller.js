@@ -1,5 +1,4 @@
 const usersServices = require('../../services/users');
-const error = require('../../utils/error');
 
 /**
  * create a user in the database
@@ -10,7 +9,6 @@ const createUser = async (req, res, next) => {
     let user = await usersServices.findUserByProperty('email', email);
     if (user) {
       res.status(400).json({ message: 'User already exists!', data: {} });
-      throw error('User already exists!', 400);
     }
 
     user = await usersServices.createUser({
@@ -38,7 +36,6 @@ const getUser = async (req, res, next) => {
     const user = await usersServices.findUserByProperty('email', email);
     if (!user) {
       res.status(404).json({ message: 'User not found!', data: {} });
-      throw error('User not found!', 404);
     }
     res.status(200).json({ message: 'User found successfully', data: user });
   } catch (error) {
@@ -55,7 +52,6 @@ const deleteUser = async (req, res, next) => {
     const user = await usersServices.findUserByProperty('email', email);
     if (!user) {
       res.status(404).json({ message: 'User not found!', data: {} });
-      throw error('User not found!', 404);
     }
     await usersServices.deleteUser(user._id);
     res.status(200).json({ message: 'User deleted successfully', data: user });
@@ -74,7 +70,6 @@ const updateUser = async (req, res, next) => {
     const user = await usersServices.findUserByProperty('_id', id);
     if (!user) {
       res.status(404).json({ message: 'User not found!', data: {} });
-      throw error('User not found!', 404);
     }
     const updatedUser = await usersServices.updateUser(user._id, {
       phone,
