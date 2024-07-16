@@ -104,4 +104,32 @@ const addProduct = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllUsers, getUser, deleteUser, addProduct };
+/**
+ * get all products from the database
+ */
+
+const getAllProducts = async (req, res, next) => {
+  try {
+    const products = await productServices.findAllProducts();
+    if (!products) {
+      res
+        .status(404)
+        .json({ status: 404, message: 'Products not found!', data: [] });
+    }
+    res.status(200).json({
+      status: 200,
+      message: 'Products found successfully',
+      data: products,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  getAllUsers,
+  getUser,
+  deleteUser,
+  addProduct,
+  getAllProducts,
+};

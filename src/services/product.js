@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 
+// create a new product
 const createProduct = ({
   name,
   category,
@@ -31,4 +32,7 @@ const createProduct = ({
   return product.save();
 };
 
-module.exports = { createProduct };
+// get all products
+const findAllProducts = () => Product.find();
+
+module.exports = { createProduct, findAllProducts };
