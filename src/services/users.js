@@ -20,4 +20,7 @@ const findUserByProperty = (key, value) => {
   return User.findOne({ [key]: value });
 };
 
-module.exports = { createUser, findUserByProperty };
+// find all users in the database
+const findAllUsers = () => User.find();
+
+module.exports = { createUser, findUserByProperty, findAllUsers };
