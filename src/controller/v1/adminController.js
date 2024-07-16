@@ -7,9 +7,13 @@ const getAllUsers = async (req, res, next) => {
   try {
     const users = await usersServices.findAllUsers();
     if (!users) {
-      res.status(404).json({ message: 'Users not found!', data: [] });
+      res
+        .status(404)
+        .json({ status: 404, message: 'Users not found!', data: [] });
     }
-    res.status(200).json({ message: 'Users found successfully', data: users });
+    res
+      .status(200)
+      .json({ status: 200, message: 'Users found successfully', data: users });
   } catch (error) {
     next(error);
   }
@@ -23,9 +27,13 @@ const getUser = async (req, res, next) => {
     const { email } = req.params;
     const user = await usersServices.findUserByProperty('email', email);
     if (!user) {
-      res.status(404).json({ message: 'User not found!', data: {} });
+      res
+        .status(404)
+        .json({ status: 404, message: 'User not found!', data: {} });
     }
-    res.status(200).json({ message: 'User found successfully', data: user });
+    res
+      .status(200)
+      .json({ status: 200, message: 'User found successfully', data: user });
   } catch (error) {
     next(error);
   }
@@ -39,10 +47,14 @@ const deleteUser = async (req, res, next) => {
     const { email } = req.params;
     const user = await usersServices.findUserByProperty('email', email);
     if (!user) {
-      res.status(404).json({ message: 'User not found!', data: {} });
+      res
+        .status(404)
+        .json({ status: 404, message: 'User not found!', data: {} });
     }
     await usersServices.deleteUser(user._id);
-    res.status(200).json({ message: 'User deleted successfully', data: user });
+    res
+      .status(200)
+      .json({ status: 200, message: 'User deleted successfully', data: user });
   } catch (error) {
     next(error);
   }

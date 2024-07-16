@@ -8,7 +8,9 @@ const createUser = async (req, res, next) => {
     const { name, email, phone, address, city, area } = req.body;
     let user = await usersServices.findUserByProperty('email', email);
     if (user) {
-      res.status(400).json({ message: 'User already exists!', data: {} });
+      res
+        .status(400)
+        .json({ status: 400, message: 'User already exists!', data: {} });
     }
 
     user = await usersServices.createUser({
@@ -20,7 +22,9 @@ const createUser = async (req, res, next) => {
       area,
     });
 
-    res.status(201).json({ message: 'User created successfully', data: user });
+    res
+      .status(201)
+      .json({ status: 201, message: 'User created successfully', data: user });
   } catch (error) {
     next(error);
   }
@@ -35,9 +39,13 @@ const getUser = async (req, res, next) => {
     const { email } = req.params;
     const user = await usersServices.findUserByProperty('email', email);
     if (!user) {
-      res.status(404).json({ message: 'User not found!', data: {} });
+      res
+        .status(404)
+        .json({ status: 404, message: 'User not found!', data: {} });
     }
-    res.status(200).json({ message: 'User found successfully', data: user });
+    res
+      .status(200)
+      .json({ status: 200, message: 'User found successfully', data: user });
   } catch (error) {
     next(error);
   }
@@ -51,10 +59,14 @@ const deleteUser = async (req, res, next) => {
     const { email } = req.params;
     const user = await usersServices.findUserByProperty('email', email);
     if (!user) {
-      res.status(404).json({ message: 'User not found!', data: {} });
+      res
+        .status(404)
+        .json({ status: 404, message: 'User not found!', data: {} });
     }
     await usersServices.deleteUser(user._id);
-    res.status(200).json({ message: 'User deleted successfully', data: user });
+    res
+      .status(200)
+      .json({ status: 200, message: 'User deleted successfully', data: user });
   } catch (error) {
     next(error);
   }
@@ -69,7 +81,9 @@ const updateUser = async (req, res, next) => {
     const { id } = req.params;
     const user = await usersServices.findUserByProperty('_id', id);
     if (!user) {
-      res.status(404).json({ message: 'User not found!', data: {} });
+      res
+        .status(404)
+        .json({ status: 404, message: 'User not found!', data: {} });
     }
     const updatedUser = await usersServices.updateUser(user._id, {
       phone,
@@ -77,9 +91,11 @@ const updateUser = async (req, res, next) => {
       city,
       area,
     });
-    res
-      .status(200)
-      .json({ message: 'User updated successfully', data: updatedUser });
+    res.status(200).json({
+      status: 200,
+      message: 'User updated successfully',
+      data: updatedUser,
+    });
   } catch (error) {
     next(error);
   }
