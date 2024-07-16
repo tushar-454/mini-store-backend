@@ -126,10 +126,33 @@ const getAllProducts = async (req, res, next) => {
   }
 };
 
+/**
+ * get a product by id
+ */
+const getProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const product = await productServices.findProductByProperty('_id', id);
+    if (!product) {
+      res
+        .status(404)
+        .json({ status: 404, message: 'Product not found!', data: {} });
+    }
+    res.status(200).json({
+      status: 200,
+      message: 'Product found successfully',
+      data: product,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUser,
   deleteUser,
   addProduct,
   getAllProducts,
+  getProduct,
 };

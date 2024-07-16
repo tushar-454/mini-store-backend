@@ -35,4 +35,12 @@ const createProduct = ({
 // get all products
 const findAllProducts = () => Product.find();
 
-module.exports = { createProduct, findAllProducts };
+// find a product by id
+const findProductByProperty = (key, value) => {
+  if (key === '_id') {
+    return Product.findById(value);
+  }
+  return Product.findOne({ [key]: value });
+};
+
+module.exports = { createProduct, findAllProducts, findProductByProperty };
