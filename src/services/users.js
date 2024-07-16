@@ -23,4 +23,7 @@ const findUserByProperty = (key, value) => {
 // find all users in the database
 const findAllUsers = () => User.find();
 
-module.exports = { createUser, findUserByProperty, findAllUsers };
+// delete user by email/_id
+const deleteUser = (id) => User.findByIdAndDelete(id);
+
+module.exports = { createUser, findUserByProperty, findAllUsers, deleteUser };

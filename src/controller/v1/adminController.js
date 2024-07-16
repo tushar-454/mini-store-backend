@@ -16,4 +16,39 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllUsers };
+/**
+ * gt a user by email
+ */
+const getUser = async (req, res, next) => {
+  try {
+    const { email } = req.params;
+    const user = await usersServices.findUserByProperty('email', email);
+    if (!user) {
+      res.status(404).json({ message: 'User not found!', data: {} });
+      throw error('User not found!', 404);
+    }
+    res.status(200).json({ message: 'User found successfully', data: user });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * delete a user by email/_id
+ */
+const deleteUser = async (req, res, next) => {
+  try {
+    const { email } = req.params;
+    const user = await usersServices.findUserByProperty('email', email);
+    if (!user) {
+      res.status(404).json({ message: 'User not found!', data: {} });
+      throw error('User not found!', 404);
+    }
+    await usersServices.deleteUser(user._id);
+    res.status(200).json({ message: 'User deleted successfully', data: user });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { getAllUsers, getUser, deleteUser };
