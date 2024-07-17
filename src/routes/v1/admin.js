@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const adminController = require('../../controller/v1/adminController');
+const orderController = require('../../controller/v1/orderController');
 
 router.get('/users', adminController.getAllUsers);
 router.get('/user/:email', adminController.getUser);
@@ -9,5 +10,7 @@ router.get('/products', adminController.getAllProducts);
 router.post('/products', adminController.addProduct);
 router.delete('/product/:id', adminController.deleteProduct);
 router.patch('/product/:id', adminController.updateProduct);
+router.get('/orders', orderController.getAllOrders);
+router.patch('/order/:id', orderController.updateOrder);
 
 module.exports = router;
