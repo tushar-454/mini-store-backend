@@ -1,4 +1,5 @@
 const usersServices = require('../../services/users');
+const productServices = require('../../services/product');
 
 /**
  * create a user in the database
@@ -101,4 +102,49 @@ const updateUser = async (req, res, next) => {
   }
 };
 
-module.exports = { createUser, getUser, deleteUser, updateUser };
+/*
+ * get all products from the database
+ */
+const getProducts = async (req, res, next) => {
+  try {
+    const products = await productServices.findAllProducts();
+    res.status(200).json({
+      status: 200,
+      message: 'Products found successfully',
+      data: products,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * get a product from the database
+ */
+const getProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const product = await productServices.findProductByProperty('_id', id);
+    if (!product) {
+      res
+        .status(404)
+        .json({ status: 404, message: 'Product not found!', data: {} });
+    }
+    res.status(200).json({
+      status: 200,
+      message: 'Product found successfully',
+      data: product,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  createUser,
+  getUser,
+  deleteUser,
+  updateUser,
+  getProducts,
+  getProduct,
+};
