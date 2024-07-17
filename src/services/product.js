@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const Product = require('../models/Product');
 
 // create a new product
@@ -78,10 +79,49 @@ const updateProduct = (
   return product.save();
 };
 
+// find products by field
+const findProductsByField = (key) => {
+  const keys = key.split(',');
+  const fields = {};
+  keys.forEach((key) => {
+    fields[key] = 1;
+  });
+  // project (aggregation)
+  return Product.aggregate([
+    {
+      $project: {
+        _id: 1,
+        ...fields,
+      },
+    },
+  ]);
+};
+
+// find a product by field
+const findProductByField = (key, id) => {
+  const keys = key.split(',');
+  const fields = {};
+  keys.forEach((key) => {
+    fields[key] = 1;
+  });
+  // here i want to find product by id and project the fields
+  return Product.aggregate([
+    { $match: { _id: new ObjectId(id) } },
+    {
+      $project: {
+        _id: 1,
+        ...fields,
+      },
+    },
+  ]);
+};
+
 module.exports = {
   createProduct,
   findAllProducts,
   findProductByProperty,
   deleteProduct,
   updateProduct,
+  findProductsByField,
+  findProductByField,
 };

@@ -140,6 +140,54 @@ const getProduct = async (req, res, next) => {
   }
 };
 
+/**
+ * get products from the database by property
+ */
+const getProductsByField = async (req, res, next) => {
+  try {
+    const { key } = req.query;
+    const products = await productServices.findProductsByField(key);
+    if (!products) {
+      res
+        .status(404)
+        .json({ status: 404, message: 'Product not found!', data: [] });
+    }
+    res.status(200).json({
+      status: 200,
+      message: 'Product found successfully',
+      data: products,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * get a product from the database by field
+ */
+
+const getProductByField = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { key } = req.query;
+
+    let product = await productServices.findProductByProperty('_id', id);
+    if (!product) {
+      res
+        .status(404)
+        .json({ status: 404, message: 'Product not found!', data: {} });
+    }
+    product = await productServices.findProductByField(key, id);
+    res.status(200).json({
+      status: 200,
+      message: 'Product found successfully',
+      data: product,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createUser,
   getUser,
@@ -147,4 +195,6 @@ module.exports = {
   updateUser,
   getProducts,
   getProduct,
+  getProductsByField,
+  getProductByField,
 };
