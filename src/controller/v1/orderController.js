@@ -68,4 +68,30 @@ const updateOrder = async (req, res, next) => {
   }
 };
 
-module.exports = { createOrder, getAllOrders, updateOrder };
+/**
+ * cencel a order in the database
+ */
+const cancelOrder = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    let order = await orderServices.findOrderByProperty('_id', id);
+    if (!order) {
+      return res.status(404).json({
+        status: 404,
+        message: 'Order not found',
+        data: {},
+      });
+    }
+    order.status = 'cancelled';
+    order = await order.save();
+    res.status(200).json({
+      status: 200,
+      message: 'Order cancelled successfully',
+      data: order,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { createOrder, getAllOrders, updateOrder, cancelOrder };
