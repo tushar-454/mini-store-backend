@@ -70,7 +70,6 @@ const addProduct = async (req, res, next) => {
       name,
       category,
       isStock,
-      isNew,
       price,
       discount,
       description,
@@ -84,7 +83,6 @@ const addProduct = async (req, res, next) => {
       name,
       category,
       isStock,
-      isNew,
       price,
       discount,
       description,
@@ -172,6 +170,54 @@ const deleteProduct = async (req, res, next) => {
   }
 };
 
+/**
+ * update a product by id
+ */
+const updateProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const {
+      name,
+      category,
+      isStock,
+      price,
+      discount,
+      description,
+      image,
+      type,
+      productDetails,
+      rating,
+      numReviews,
+    } = req.body;
+    let product = await productServices.findProductByProperty('_id', id);
+    if (!product) {
+      res
+        .status(404)
+        .json({ status: 404, message: 'Product not found!', data: {} });
+    }
+    product = await productServices.updateProduct(product, {
+      name,
+      category,
+      isStock,
+      price,
+      discount,
+      description,
+      image,
+      type,
+      productDetails,
+      rating,
+      numReviews,
+    });
+    res.status(200).json({
+      status: 200,
+      message: 'Product updated successfully',
+      data: product,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUser,
@@ -180,4 +226,5 @@ module.exports = {
   getAllProducts,
   getProduct,
   deleteProduct,
+  updateProduct,
 };

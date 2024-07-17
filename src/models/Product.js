@@ -16,11 +16,6 @@ const productSchema = new Schema({
     required: true,
     default: true,
   },
-  isNew: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
   price: {
     type: Number,
     required: true,
