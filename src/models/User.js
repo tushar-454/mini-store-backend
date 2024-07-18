@@ -26,18 +26,21 @@ const userSchema = new Schema({
     required: true,
     trim: true,
     maxlength: 50,
+    default: 'address',
   },
   city: {
     type: String,
     required: true,
     trim: true,
     maxlength: 50,
+    default: 'city',
   },
   area: {
     type: String,
     required: true,
     trim: true,
     maxlength: 50,
+    default: 'area',
   },
   createdAt: {
     type: Date,

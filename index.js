@@ -8,6 +8,13 @@ const cookieParser = require('cookie-parser');
 const mongooseConnect = require('./src/database/mongooseConnect');
 const cors = require('cors');
 
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use(routerV1);
