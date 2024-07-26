@@ -6,15 +6,8 @@ const orderServices = require('../../services/order');
 
 const createOrder = async (req, res, next) => {
   try {
-    const { userId, productId, size, color, quantity, price } = req.body;
-    const order = await orderServices.createOrder({
-      userId,
-      productId,
-      size,
-      color,
-      quantity,
-      price,
-    });
+    const { userId, price, orderItem } = req.body;
+    const order = await orderServices.createOrder({ userId, price, orderItem });
     res.status(201).json({
       status: 201,
       message: 'Order created successfully',

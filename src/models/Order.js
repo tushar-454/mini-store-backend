@@ -7,25 +7,23 @@ const orderSchema = new Schema(
       ref: 'User',
       required: true,
     },
-    productId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Product',
-      required: true,
-    },
-    size: {
-      type: String,
-      required: true,
-    },
-    color: {
-      type: String,
-      required: true,
-    },
-    quantity: {
-      type: Number,
-      required: true,
-    },
     price: {
       type: Number,
+      required: true,
+    },
+    orderItem: {
+      type: [
+        {
+          randomId: { type: Number, required: true },
+          image: { type: String, required: true },
+          name: { type: String, required: true },
+          isStock: { type: Boolean, required: true },
+          price: { type: Number, required: true },
+          quentity: { type: Number, required: true },
+          size: { type: String, required: true },
+          color: { type: String, required: true },
+        },
+      ],
       required: true,
     },
     status: {
