@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const usersContoller = require('../../controller/v1/usersContoller');
 const orderController = require('../../controller/v1/orderController');
+const statisticController = require('../../controller/v1/statisticController');
 
 router.get('/one/:email', usersContoller.getUser);
 router.delete('/one/:email', usersContoller.deleteUser);
@@ -13,5 +14,6 @@ router.get('/product/field/:id', usersContoller.getProductByField);
 router.post('/order', orderController.createOrder);
 router.get('/orders', orderController.getAllOrders);
 router.patch('/order/cancel/:id', orderController.cancelOrder);
+router.get('/statistic/:id', statisticController.statisticUserAct);
 
 module.exports = router;
