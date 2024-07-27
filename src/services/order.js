@@ -9,7 +9,7 @@ const createOrder = ({ userId, price, orderItem }) => {
 // get all orders from the database
 const getAllOrders = (userId) => {
   if (userId) {
-    return Order.find({ userId });
+    return Order.find({ userId }).sort({ createdAt: -1 });
   }
   return [];
 };
