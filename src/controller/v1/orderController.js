@@ -23,7 +23,8 @@ const createOrder = async (req, res, next) => {
  */
 const getAllOrders = async (req, res, next) => {
   try {
-    const orders = await orderServices.getAllOrders();
+    const { userId } = req.query;
+    const orders = await orderServices.getAllOrders(userId);
     res.status(200).json({
       status: 200,
       message: 'Orders retrieved successfully',
@@ -35,36 +36,10 @@ const getAllOrders = async (req, res, next) => {
 };
 
 /**
- * update a order in the database
- */
-const updateOrder = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
-    let order = await orderServices.findOrderByProperty('_id', id);
-    if (!order) {
-      return res.status(404).json({
-        status: 404,
-        message: 'Order not found',
-        data: {},
-      });
-    }
-    order.status = status ?? order.status;
-    order = await order.save();
-    res.status(200).json({
-      status: 200,
-      message: 'Order updated successfully',
-      data: order,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-/**
  * cencel a order in the database
  */
 const cancelOrder = async (req, res, next) => {
+  const { status } = req.body;
   try {
     const { id } = req.params;
     let order = await orderServices.findOrderByProperty('_id', id);
@@ -75,16 +50,24 @@ const cancelOrder = async (req, res, next) => {
         data: {},
       });
     }
-    order.status = 'cancelled';
-    order = await order.save();
-    res.status(200).json({
-      status: 200,
-      message: 'Order cancelled successfully',
-      data: order,
+    if (status === 'cancelled' || status === 'pending') {
+      order.status = status;
+      order = await order.save();
+      res.status(200).json({
+        status: 200,
+        message: 'Order cancelled successfully',
+        data: order,
+      });
+      return;
+    }
+    res.status(404).json({
+      status: 404,
+      message: 'Something went wrong',
+      data: {},
     });
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = { createOrder, getAllOrders, updateOrder, cancelOrder };
+module.exports = { createOrder, getAllOrders, cancelOrder };

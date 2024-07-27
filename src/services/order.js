@@ -7,7 +7,12 @@ const createOrder = ({ userId, price, orderItem }) => {
 };
 
 // get all orders from the database
-const getAllOrders = () => Order.find();
+const getAllOrders = (userId) => {
+  if (userId) {
+    return Order.find({ userId });
+  }
+  return [];
+};
 
 // find order by property
 const findOrderByProperty = (key, value) => {
@@ -17,4 +22,12 @@ const findOrderByProperty = (key, value) => {
   return Order.findOne({ [key]: value });
 };
 
-module.exports = { createOrder, getAllOrders, findOrderByProperty };
+// get all ordes for admin
+const getAllOrdersAdmin = () => Order.find();
+
+module.exports = {
+  createOrder,
+  getAllOrders,
+  findOrderByProperty,
+  getAllOrdersAdmin,
+};

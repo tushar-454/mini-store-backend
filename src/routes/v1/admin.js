@@ -10,7 +10,7 @@ router.get('/products', adminController.getAllProducts);
 router.post('/products', adminController.addProduct);
 router.delete('/product/:id', adminController.deleteProduct);
 router.patch('/product/:id', adminController.updateProduct);
-router.get('/orders', orderController.getAllOrders);
-router.patch('/order/:id', orderController.updateOrder);
+router.get('/orders', adminController.getAllOrders);
+router.patch('/order/:id', adminController.updateOrder);
 
 module.exports = router;

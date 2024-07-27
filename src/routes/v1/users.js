@@ -11,6 +11,7 @@ router.get('/product/:id', usersContoller.getProduct);
 router.get('/products/field', usersContoller.getProductsByField);
 router.get('/product/field/:id', usersContoller.getProductByField);
 router.post('/order', orderController.createOrder);
+router.get('/orders', orderController.getAllOrders);
 router.patch('/order/cancel/:id', orderController.cancelOrder);
 
 module.exports = router;
