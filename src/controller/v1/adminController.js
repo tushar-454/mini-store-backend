@@ -111,7 +111,7 @@ const getAllProducts = async (req, res, next) => {
   try {
     const products = await productServices.findAllProducts();
     if (!products) {
-      res
+      return res
         .status(404)
         .json({ status: 404, message: 'Products not found!', data: [] });
     }
@@ -133,7 +133,7 @@ const getProduct = async (req, res, next) => {
     const { id } = req.params;
     const product = await productServices.findProductByProperty('_id', id);
     if (!product) {
-      res
+      return res
         .status(404)
         .json({ status: 404, message: 'Product not found!', data: {} });
     }
@@ -156,7 +156,7 @@ const deleteProduct = async (req, res, next) => {
     const { id } = req.params;
     const product = await productServices.findProductByProperty('_id', id);
     if (!product) {
-      res
+      return res
         .status(404)
         .json({ status: 404, message: 'Product not found!', data: {} });
     }
@@ -192,7 +192,7 @@ const updateProduct = async (req, res, next) => {
     } = req.body;
     let product = await productServices.findProductByProperty('_id', id);
     if (!product) {
-      res
+      return res
         .status(404)
         .json({ status: 404, message: 'Product not found!', data: {} });
     }

@@ -9,7 +9,7 @@ const createUser = async (req, res, next) => {
     const { name, email, phone, address, city, area } = req.body;
     let user = await usersServices.findUserByProperty('email', email);
     if (user) {
-      res
+      return res
         .status(400)
         .json({ status: 400, message: 'User already exists!', data: {} });
     }
@@ -82,7 +82,7 @@ const updateUser = async (req, res, next) => {
     const { id } = req.params;
     const user = await usersServices.findUserByProperty('_id', id);
     if (!user) {
-      res
+      return res
         .status(404)
         .json({ status: 404, message: 'User not found!', data: {} });
     }
@@ -126,7 +126,7 @@ const getProduct = async (req, res, next) => {
     const { id } = req.params;
     const product = await productServices.findProductByProperty('_id', id);
     if (!product) {
-      res
+      return res
         .status(404)
         .json({ status: 404, message: 'Product not found!', data: {} });
     }
@@ -148,7 +148,7 @@ const getProductsByField = async (req, res, next) => {
     const { key } = req.query;
     const products = await productServices.findProductsByField(key);
     if (!products) {
-      res
+      return res
         .status(404)
         .json({ status: 404, message: 'Product not found!', data: [] });
     }
@@ -173,7 +173,7 @@ const getProductByField = async (req, res, next) => {
 
     let product = await productServices.findProductByProperty('_id', id);
     if (!product) {
-      res
+      return res
         .status(404)
         .json({ status: 404, message: 'Product not found!', data: {} });
     }

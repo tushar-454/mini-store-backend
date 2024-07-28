@@ -11,7 +11,7 @@ const statisticUserAct = async (req, res, next) => {
       totalCancellation: 0,
     };
     if (!orders) {
-      res.status(200).json({
+      return res.status(200).json({
         status: 200,
         message: 'Statistics found',
         data: userStatistic,
