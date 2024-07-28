@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const usersRoutes = require('./users.js');
 const adminRoutes = require('./admin.js');
-const logger = require('../../middleware/Logger.js');
+const logger = require('../../middleware/logger.js');
 
 router.use('/api/v1/users', logger, usersRoutes);
 router.use('/api/v1/admin', logger, adminRoutes);
