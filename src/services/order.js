@@ -23,7 +23,10 @@ const findOrderByProperty = (key, value) => {
 };
 
 // get all ordes for admin
-const getAllOrdersAdmin = () => Order.find();
+const getAllOrdersAdmin = () =>
+  Order.find()
+    .populate('userId', 'name email phone area city address')
+    .sort({ createdAt: -1 });
 
 module.exports = {
   createOrder,
