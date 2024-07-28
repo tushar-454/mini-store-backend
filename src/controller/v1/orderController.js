@@ -43,7 +43,7 @@ const cancelOrder = async (req, res, next) => {
   try {
     const { id } = req.params;
     let order = await orderServices.findOrderByProperty('_id', id);
-    if (!order) {
+    if (!order || order.status === 'confirm' || order.status === 'completed') {
       return res.status(404).json({
         status: 404,
         message: 'Order not found',
