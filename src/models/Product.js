@@ -32,11 +32,9 @@ const productSchema = new Schema({
     trim: true,
   },
   image: {
-    type: {
-      main: String,
-      gallery: [String],
-    },
+    type: [String],
     required: true,
+    trim: true,
   },
   type: {
     type: [String],
