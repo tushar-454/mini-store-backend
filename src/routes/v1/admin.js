@@ -12,5 +12,6 @@ router.delete('/product/:id', adminController.deleteProduct);
 router.patch('/product/:id', adminController.updateProduct);
 router.get('/orders', adminController.getAllOrders);
 router.patch('/order/:id', adminController.updateOrder);
+router.get('/statistics', adminController.adminStatistics);
 
 module.exports = router;

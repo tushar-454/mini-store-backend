@@ -262,6 +262,44 @@ const updateOrder = async (req, res, next) => {
   }
 };
 
+/**
+ * all statistics for admin
+ */
+
+const adminStatistics = async (req, res, next) => {
+  try {
+    const users = await usersServices.findAllUsers();
+    const products = await productServices.findAllProducts();
+    const orders = await orderServices.getAllOrdersAdmin();
+    const statistics = {
+      totalUsers: users.length,
+      totalProducts: products.length,
+      totalSells: orders
+        .filter((order) => order.status === 'completed')
+        .reduce((acc, order) => acc + order.price, 0),
+      totalPendingOrders: orders.filter((order) => order.status === 'pending')
+        .length,
+      totalCompletedOrders: orders.filter(
+        (order) => order.status === 'completed'
+      ).length,
+      totalConfimedOrders: orders.filter((order) => order.status === 'confirm')
+        .length,
+      totalCancelledOrders: orders.filter(
+        (order) => order.status === 'cancelled'
+      ).length,
+      totalOrders: orders.length,
+    };
+
+    res.status(200).json({
+      status: 200,
+      message: 'Statistics retrieved successfully',
+      data: statistics,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUser,
@@ -273,4 +311,5 @@ module.exports = {
   updateProduct,
   getAllOrders,
   updateOrder,
+  adminStatistics,
 };
