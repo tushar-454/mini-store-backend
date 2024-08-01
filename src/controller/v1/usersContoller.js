@@ -106,8 +106,10 @@ const updateUser = async (req, res, next) => {
  * get all products from the database
  */
 const getProducts = async (req, res, next) => {
+  const { category } = req.query;
+
   try {
-    const products = await productServices.findAllProducts();
+    const products = await productServices.findAllProducts(category);
     res.status(200).json({
       status: 200,
       message: 'Products found successfully',
@@ -145,8 +147,8 @@ const getProduct = async (req, res, next) => {
  */
 const getProductsByField = async (req, res, next) => {
   try {
-    const { key } = req.query;
-    const products = await productServices.findProductsByField(key);
+    const { key, category } = req.query;
+    const products = await productServices.findProductsByField(key, category);
     if (!products) {
       return res
         .status(404)

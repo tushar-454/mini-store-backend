@@ -18,7 +18,7 @@ const createProduct = ({
 }) => {
   const product = new Product({
     name,
-    category,
+    category: category.toLowerCase(),
     isStock,
     isNew,
     price,
@@ -34,7 +34,12 @@ const createProduct = ({
 };
 
 // get all products
-const findAllProducts = () => Product.find();
+const findAllProducts = (category) => {
+  if (!category || category === '') {
+    return Product.find();
+  }
+  return Product.find({ category: category.toLowerCase() });
+};
 
 // find a product by id
 const findProductByProperty = (key, value) => {
@@ -80,13 +85,31 @@ const updateProduct = (
 };
 
 // find products by field
-const findProductsByField = (key) => {
+const findProductsByField = (key, category) => {
   const keys = key.split(',');
   const fields = {};
   keys.forEach((key) => {
     fields[key] = 1;
   });
   // project (aggregation)
+  if (category) {
+    const categorys = category.toLowerCase().split(',');
+    return Product.aggregate([
+      {
+        $project: {
+          _id: 1,
+          ...fields,
+        },
+      },
+      {
+        $match: {
+          category: {
+            $in: categorys,
+          },
+        },
+      },
+    ]);
+  }
   return Product.aggregate([
     {
       $project: {
