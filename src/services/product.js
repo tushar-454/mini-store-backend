@@ -85,39 +85,49 @@ const updateProduct = (
 };
 
 // find products by field
-const findProductsByField = (key, category) => {
+const findProductsByField = (key, category, minPrice, maxPrice) => {
   const keys = key.split(',');
   const fields = {};
   keys.forEach((key) => {
     fields[key] = 1;
   });
   // project (aggregation)
-  if (category) {
-    const categorys = category.toLowerCase().split(',');
-    return Product.aggregate([
-      {
-        $project: {
-          _id: 1,
-          ...fields,
-        },
-      },
-      {
-        $match: {
-          category: {
-            $in: categorys,
-          },
-        },
-      },
-    ]);
-  }
-  return Product.aggregate([
+
+  const pipeline = [
     {
       $project: {
         _id: 1,
         ...fields,
       },
     },
-  ]);
+  ];
+
+  // Conditionally add match stages
+  const matchStage = {};
+
+  if (category) {
+    const categorys = category.toLowerCase().split(',');
+    matchStage.category = {
+      $in: categorys,
+    };
+  }
+
+  if (minPrice !== undefined || maxPrice !== undefined) {
+    matchStage.price = {};
+    if (minPrice !== undefined) {
+      matchStage.price.$gte = parseInt(minPrice, 10);
+    }
+    if (maxPrice !== undefined) {
+      matchStage.price.$lte = parseInt(maxPrice, 10);
+    }
+  }
+
+  // Add the match stage to the pipeline if it has any conditions
+  if (Object.keys(matchStage).length > 0) {
+    pipeline.push({ $match: matchStage });
+  }
+
+  return Product.aggregate(pipeline);
 };
 
 // find a product by field

@@ -147,8 +147,13 @@ const getProduct = async (req, res, next) => {
  */
 const getProductsByField = async (req, res, next) => {
   try {
-    const { key, category } = req.query;
-    const products = await productServices.findProductsByField(key, category);
+    const { key, category, minPrice, maxPrice } = req.query;
+    const products = await productServices.findProductsByField(
+      key,
+      category,
+      minPrice,
+      maxPrice
+    );
     if (!products) {
       return res
         .status(404)
