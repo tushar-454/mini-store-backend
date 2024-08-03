@@ -1,5 +1,6 @@
 const usersServices = require('../../services/users');
 const productServices = require('../../services/product');
+const Product = require('../../models/Product');
 
 /**
  * create a user in the database
@@ -195,6 +196,31 @@ const getProductByField = async (req, res, next) => {
   }
 };
 
+const getRelatedProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+    const relatedProducts = await Product.aggregate([
+      {
+        $match: {
+          category: product.category,
+          _id: { $ne: product._id },
+        },
+      },
+      {
+        $limit: 4,
+      },
+    ]);
+    res.status(200).json({
+      status: 200,
+      message: 'Related products found successfully',
+      data: relatedProducts,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createUser,
   getUser,
@@ -204,4 +230,5 @@ module.exports = {
   getProduct,
   getProductsByField,
   getProductByField,
+  getRelatedProduct,
 };
