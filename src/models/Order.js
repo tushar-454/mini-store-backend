@@ -26,6 +26,14 @@ const orderSchema = new Schema(
       ],
       required: true,
     },
+    transactionId: {
+      type: String,
+      required: true,
+    },
+    isPaid: {
+      type: Boolean,
+      default: false,
+    },
     status: {
       type: String,
       enum: ['pending', 'confirm', 'completed', 'cancelled'],

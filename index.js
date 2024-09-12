@@ -7,6 +7,7 @@ const globalError = require('./src/error/globalError');
 const cookieParser = require('cookie-parser');
 const mongooseConnect = require('./src/database/mongooseConnect');
 const cors = require('cors');
+const logger = require('./src/middleware/logger');
 
 app.use(
   cors({
@@ -18,6 +19,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(routerV1);
+app.use(logger);
 app.use(globalError);
 
 app.get('/health', (_, res) => {
