@@ -85,7 +85,29 @@ const successPayment = async (req, res, next) => {
   }
 };
 
+const failPayment = async (req, res, next) => {
+  try {
+    const failData = req.body;
+    if (failData.status !== 'FAILED') {
+      return res.status(400).json({
+        status: 400,
+        error: 'Invalid request, payment failed',
+      });
+    }
+    // update order status
+    const order = await Order.findOneAndDelete({
+      transactionId: failData.tran_id,
+    });
+    if (order) {
+      res.redirect(`${process.env.FRONTEND_URL}/fail`);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createPayment,
   successPayment,
+  failPayment,
 };
