@@ -1,6 +1,7 @@
 const { ObjectId } = require('mongodb');
 const orderServices = require('../../services/order');
 const axios = require('axios');
+const Order = require('../../models/Order');
 
 const createPayment = async (req, res, next) => {
   try {
@@ -34,10 +35,11 @@ const createPayment = async (req, res, next) => {
       cus_email: user.email,
       cus_add1: user.place,
       cus_city: user.city,
-      cus_postcode: '0000',
+      cus_postcode: '1212',
       cus_country: 'Bangladesh',
       cus_phone: user.phone,
     };
+    console.log('payment data create');
     const response = await axios({
       method: 'post',
       url: 'https://sandbox.sslcommerz.com/gwprocess/v4/api.php',
@@ -56,6 +58,34 @@ const createPayment = async (req, res, next) => {
     next(error);
   }
 };
+
+const successPayment = async (req, res, next) => {
+  try {
+    const successData = req.body;
+    if (successData.status !== 'VALID') {
+      return res.status(400).json({
+        status: 400,
+        error: 'Invalid request, payment failed',
+      });
+    }
+    // update order status
+    const order = await Order.findOneAndUpdate(
+      {
+        transactionId: successData.tran_id,
+      },
+      {
+        isPaid: true,
+      }
+    );
+    if (order) {
+      res.redirect(`${process.env.FRONTEND_URL}/success`);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createPayment,
+  successPayment,
 };

@@ -11,12 +11,17 @@ const logger = require('./src/middleware/logger');
 
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'https://mini-store-nine.vercel.app'],
+    origin: [
+      'http://localhost:5173',
+      'https://mini-store-nine.vercel.app',
+      'https://sandbox.sslcommerz.com',
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   })
 );
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(routerV1);
 app.use(logger);
