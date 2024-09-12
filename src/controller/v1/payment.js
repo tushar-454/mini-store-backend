@@ -106,8 +106,30 @@ const failPayment = async (req, res, next) => {
   }
 };
 
+const cancelPayment = async (req, res, next) => {
+  try {
+    const cancelData = req.body;
+    if (cancelData.status !== 'CANCELLED') {
+      return res.status(400).json({
+        status: 400,
+        error: 'Invalid request, payment failed',
+      });
+    }
+    // update order status
+    const order = await Order.findOneAndDelete({
+      transactionId: cancelData.tran_id,
+    });
+    if (order) {
+      res.redirect(`${process.env.FRONTEND_URL}/cancel`);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createPayment,
   successPayment,
   failPayment,
+  cancelPayment,
 };
