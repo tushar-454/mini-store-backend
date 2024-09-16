@@ -39,7 +39,6 @@ const createPayment = async (req, res, next) => {
       cus_country: 'Bangladesh',
       cus_phone: user.phone,
     };
-    console.log('payment data create');
     const response = await axios({
       method: 'post',
       url: 'https://sandbox.sslcommerz.com/gwprocess/v4/api.php',
@@ -78,7 +77,9 @@ const successPayment = async (req, res, next) => {
       }
     );
     if (order) {
-      res.redirect(`${process.env.FRONTEND_URL}/success`);
+      res.redirect(
+        `${process.env.FRONTEND_URL}/success/${successData.tran_id}`
+      );
     }
   } catch (error) {
     next(error);
@@ -99,7 +100,7 @@ const failPayment = async (req, res, next) => {
       transactionId: failData.tran_id,
     });
     if (order) {
-      res.redirect(`${process.env.FRONTEND_URL}/fail`);
+      res.redirect(`${process.env.FRONTEND_URL}/fail/${failData.tran_id}`);
     }
   } catch (error) {
     next(error);
@@ -120,7 +121,25 @@ const cancelPayment = async (req, res, next) => {
       transactionId: cancelData.tran_id,
     });
     if (order) {
-      res.redirect(`${process.env.FRONTEND_URL}/cancel`);
+      res.redirect(`${process.env.FRONTEND_URL}/cancel/${cancelData.tran_id}`);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const checkPayment = async (req, res, next) => {
+  try {
+    const { transactionId } = req.params;
+    if (transactionId) {
+      const order = await orderServices.findOrderByProperty(
+        'transactionId',
+        transactionId
+      );
+      if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+      return res.status(200).json({ order });
     }
   } catch (error) {
     next(error);
@@ -132,4 +151,5 @@ module.exports = {
   successPayment,
   failPayment,
   cancelPayment,
+  checkPayment,
 };
