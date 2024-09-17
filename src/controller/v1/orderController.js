@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const orderServices = require('../../services/order');
 
 /**
@@ -6,8 +7,15 @@ const orderServices = require('../../services/order');
 
 const createOrder = async (req, res, next) => {
   try {
-    const { userId, price, orderItem } = req.body;
-    const order = await orderServices.createOrder({ userId, price, orderItem });
+    const { user, price, orderItem, method } = req.body;
+    const transactionId = new ObjectId().toString();
+    const order = await orderServices.createOrder({
+      userId: user._id,
+      price,
+      orderItem,
+      transactionId,
+      method,
+    });
     res.status(201).json({
       status: 201,
       message: 'Order created successfully',

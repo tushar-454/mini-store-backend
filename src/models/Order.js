@@ -43,6 +43,11 @@ const orderSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    method: {
+      type: String,
+      enum: ['cod', 'payOnline'],
+      required: true,
+    },
   },
   {
     timestamps: true,

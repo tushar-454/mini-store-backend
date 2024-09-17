@@ -1,8 +1,14 @@
 const Order = require('../models/Order');
 
 // create a order in the database
-const createOrder = ({ userId, price, orderItem, transactionId }) => {
-  const newOrder = new Order({ userId, price, orderItem, transactionId });
+const createOrder = ({ userId, price, orderItem, transactionId, method }) => {
+  const newOrder = new Order({
+    userId,
+    price,
+    orderItem,
+    transactionId,
+    method,
+  });
   return newOrder.save();
 };
 

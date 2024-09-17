@@ -5,8 +5,8 @@ const Order = require('../../models/Order');
 
 const createPayment = async (req, res, next) => {
   try {
-    const { price, user, orderItem } = req.body;
-    if (!price || !user || !orderItem) {
+    const { price, user, orderItem, method } = req.body;
+    if (!price || !user || !orderItem || !method) {
       return res.status(400).json({ message: 'User bad request' });
     }
     const transactionId = new ObjectId().toString();
@@ -15,6 +15,7 @@ const createPayment = async (req, res, next) => {
       price,
       orderItem,
       transactionId,
+      method,
     });
     const paymentData = {
       store_id: process.env.STORE_ID,
