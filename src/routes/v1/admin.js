@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const adminController = require('../../controller/v1/adminController');
-const orderController = require('../../controller/v1/orderController');
 
 router.get('/users', adminController.getAllUsers);
 router.get('/user/:email', adminController.getUser);
