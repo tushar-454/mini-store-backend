@@ -9,12 +9,8 @@ router.delete('/one/:email', verifyUser, usersContoller.deleteUser);
 router.put('/one/:id', verifyUser, usersContoller.updateUser);
 router.post('/one', usersContoller.createUser);
 router.get('/products', usersContoller.getProducts);
-router.get('/product/:id', verifyUser, usersContoller.getProduct);
-router.get(
-  '/product/related/:id',
-  verifyUser,
-  usersContoller.getRelatedProduct
-);
+router.get('/product/:id', usersContoller.getProduct);
+router.get('/product/related/:id', usersContoller.getRelatedProduct);
 router.get('/products/field', usersContoller.getProductsByField);
 router.get('/product/field/:id', usersContoller.getProductByField);
 router.post('/order', verifyUser, orderController.createOrder);
