@@ -3,6 +3,14 @@ import { z } from 'zod';
 import formatZodErrors from '../../utils/formatZodError';
 
 const createReviewValidationSchema = z.object({
+  rating: z.coerce
+    .number()
+    .min(1, {
+      message: 'Rating should be between 1 and 5',
+    })
+    .max(5, {
+      message: 'Rating should be between 1 and 5',
+    }),
   comment: z
     .string()
     .nonempty({
