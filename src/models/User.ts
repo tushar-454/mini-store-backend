@@ -21,7 +21,7 @@ const userSchema = new Schema(
     phone: { type: String, default: null },
     password: { type: String, default: null },
     photo: { type: String, default: null },
-    role: { type: String, required: true, default: 'admin' },
+    role: { type: String, required: true, default: 'user' },
     status: { type: String, required: true, default: 'active' },
     is_deleted: { type: Boolean, required: true, default: false },
   },
