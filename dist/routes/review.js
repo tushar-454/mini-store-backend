@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.reviewRoutes = void 0;
+const express_1 = require("express");
+const create_review_1 = require("../controllers/review/create_review");
+const get_review_1 = require("../controllers/review/get_review");
+const update_review_1 = require("../controllers/review/update_review");
+const verify_admin_1 = require("../middlewares/verify_admin");
+const verify_token_1 = __importDefault(require("../middlewares/verify_token"));
+const verify_user_1 = __importDefault(require("../middlewares/verify_user"));
+const create_review_2 = require("../validation/review/create_review");
+const update_review_2 = require("../validation/review/update_review");
+const router = (0, express_1.Router)();
+exports.reviewRoutes = router;
+router.post('/:orderId', verify_token_1.default, verify_user_1.default, create_review_2.createReviewValidation, create_review_1.createReview);
+router.get('/', get_review_1.getReview);
+router.put('/:reviewId', verify_token_1.default, verify_admin_1.verifyAdmin, update_review_2.updateReviewValidation, update_review_1.updateReview);

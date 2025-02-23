@@ -1,0 +1,23 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.couponRoutes = void 0;
+const express_1 = require("express");
+const create_coupon_1 = require("../controllers/coupon/create_coupon");
+const delete_coupon_1 = require("../controllers/coupon/delete_coupon");
+const get_coupon_1 = require("../controllers/coupon/get_coupon");
+const get_coupon_by_code_1 = require("../controllers/coupon/get_coupon_by_code");
+const update_coupon_1 = require("../controllers/coupon/update_coupon");
+const verify_admin_1 = require("../middlewares/verify_admin");
+const verify_token_1 = __importDefault(require("../middlewares/verify_token"));
+const create_coupon_2 = require("../validation/coupon/create_coupon");
+const update_coupon_2 = require("../validation/coupon/update_coupon");
+const router = (0, express_1.Router)();
+exports.couponRoutes = router;
+router.post('/', verify_token_1.default, verify_admin_1.verifyAdmin, create_coupon_2.createCouponValidation, create_coupon_1.createCoupon);
+router.get('/', verify_token_1.default, verify_admin_1.verifyAdmin, get_coupon_1.getCoupon);
+router.get('/:code', get_coupon_by_code_1.getCouponByCode);
+router.put('/:couponId', verify_token_1.default, verify_admin_1.verifyAdmin, update_coupon_2.updateCouponValidation, update_coupon_1.updateCoupon);
+router.delete('/:couponId', verify_token_1.default, verify_admin_1.verifyAdmin, delete_coupon_1.deleteCoupon);

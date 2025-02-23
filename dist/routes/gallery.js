@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.galleryRoutes = void 0;
+const express_1 = require("express");
+const create_gallery_1 = require("../controllers/gallery/create_gallery");
+const delete_gallery_1 = require("../controllers/gallery/delete_gallery");
+const get_gallery_1 = require("../controllers/gallery/get_gallery");
+const update_gallery_1 = require("../controllers/gallery/update_gallery");
+const verify_admin_1 = require("../middlewares/verify_admin");
+const verify_token_1 = __importDefault(require("../middlewares/verify_token"));
+const create_gallery_2 = require("../validation/gallery/create_gallery");
+const update_gallery_2 = require("../validation/gallery/update_gallery");
+const router = (0, express_1.Router)();
+exports.galleryRoutes = router;
+router.post('/', verify_token_1.default, verify_admin_1.verifyAdmin, create_gallery_2.createGalleryValidation, create_gallery_1.createGallery);
+router.get('/', get_gallery_1.getGallery);
+router.put('/:galleryId', verify_token_1.default, verify_admin_1.verifyAdmin, update_gallery_2.updateGalleryValidation, update_gallery_1.updateGallery);
+router.delete('/:galleryId', verify_token_1.default, verify_admin_1.verifyAdmin, delete_gallery_1.deleteGallery);

@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.carouselRoutes = void 0;
+const express_1 = require("express");
+const create_carousel_1 = require("../controllers/carousel/create_carousel");
+const delete_carousel_1 = require("../controllers/carousel/delete_carousel");
+const get_carousel_1 = require("../controllers/carousel/get_carousel");
+const update_carousel_1 = require("../controllers/carousel/update_carousel");
+const verify_admin_1 = require("../middlewares/verify_admin");
+const verify_token_1 = __importDefault(require("../middlewares/verify_token"));
+const create_carousel_2 = require("../validation/carousel/create_carousel");
+const update_carousel_2 = require("../validation/carousel/update_carousel");
+const router = (0, express_1.Router)();
+exports.carouselRoutes = router;
+router.post('/', verify_token_1.default, verify_admin_1.verifyAdmin, create_carousel_2.createCarouselValidation, create_carousel_1.createCarousel);
+router.get('/', get_carousel_1.getCarousel);
+router.put('/:carouselId', verify_token_1.default, verify_admin_1.verifyAdmin, update_carousel_2.updateCarouselValidation, update_carousel_1.updateCarousel);
+router.delete('/:carouselId', verify_token_1.default, verify_admin_1.verifyAdmin, delete_carousel_1.deleteCarousel);
