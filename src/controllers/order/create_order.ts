@@ -35,7 +35,7 @@ const createOrder = async (req: Request, res: Response, next: NextFunction): Pro
       }
     );
     let shipping = 120;
-    if (division === 'Dhaka') shipping = 80;
+    if (division === 'Dhaka' && district === 'Dhaka') shipping = 70;
     // Check if coupon code is valid
     let coupon_discount = 0;
     if (coupon_code) {
