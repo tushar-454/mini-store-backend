@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.connectDB = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
-const connectionURI = process.env.DB_URI || 'mongodb://localhost:27017/adnan_homemade_cake_backend';
+const connectionURI = process.env.DB_URI || 'mongodb://localhost:27017/mini_store_backend';
 const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
     yield mongoose_1.default.connect(connectionURI);
     console.log('Pinged your deployment. You successfully connected to MongoDB!');
