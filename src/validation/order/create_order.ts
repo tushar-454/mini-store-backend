@@ -37,6 +37,9 @@ const createOrderValidationSchema = z.object({
   }),
   coupon_code: z.string().optional(),
   instruction: z.string().optional(),
+  transactionId: z.string({
+    message: 'Transaction ID is required',
+  }),
 });
 
 const createOrderValidation = async (req: Request, res: Response, next: NextFunction) => {

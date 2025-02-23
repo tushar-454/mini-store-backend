@@ -32,6 +32,7 @@ interface IOrder extends Document {
   tracking_id: number;
   instruction: string;
   isReviewed: boolean;
+  transactionId: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -73,6 +74,7 @@ const orderSchema: Schema = new Schema<IOrder>(
     tracking_id: { type: Number, unique: true, required: true },
     instruction: { type: String, default: null },
     isReviewed: { type: Boolean, default: false },
+    transactionId: { type: String, required: true },
   },
   {
     timestamps: true,

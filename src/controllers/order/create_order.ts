@@ -6,7 +6,7 @@ import { CreateOrderInput } from '../../validation/order/create_order';
 
 const createOrder = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { address, district, division, sub_district, line_items, coupon_code, name, email, phone, instruction } = req.body as CreateOrderInput;
+    const { address, district, division, sub_district, line_items, coupon_code, name, email, phone, instruction, transactionId } = req.body as CreateOrderInput;
     const populate_line_items = await Promise.all(
       line_items.map(async (item) => {
         const { product_id, variant } = item;
@@ -76,6 +76,7 @@ const createOrder = async (req: Request, res: Response, next: NextFunction): Pro
       coupon_discount: +coupon_discount.toFixed(2),
       tracking_id: +Date.now().toString().slice(4),
       instruction,
+      transactionId,
     });
     if (coupon_code) {
       const coupon = await findCouponByProperty('code', coupon_code);
