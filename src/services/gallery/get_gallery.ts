@@ -2,7 +2,7 @@ import { Gallery, IGallery } from '../../models/Gallery';
 
 const getGalleryService = async (): Promise<IGallery[] | undefined> => {
   try {
-    const galleries = await Gallery.find().select({
+    const galleries = await Gallery.find().sort({ createdAt: -1 }).select({
       createdAt: 0,
       updatedAt: 0,
     });

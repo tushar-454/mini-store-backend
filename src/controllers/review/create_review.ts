@@ -35,7 +35,7 @@ const createReview = async (req: RequestWithUser, res: Response, next: NextFunct
     const productRatingPromise = order.line_items.map(async (item) => {
       const product = await findProductByProperty('_id', item.product_id);
       if (!product) return;
-      product.rating = Number(((product.rating + rating) / product.sell_count).toFixed(1));
+      product.rating = Number(((product.rating * product.sell_count + rating) / product.sell_count).toFixed(1));
       return product.save();
     });
     await Promise.all(productRatingPromise);
