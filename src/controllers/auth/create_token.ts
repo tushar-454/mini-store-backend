@@ -12,14 +12,14 @@ const createToken = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
     const token = jwt.sign({ email }, process.env.JWT_SECRET as string, {
-      expiresIn: '1h',
+      expiresIn: process.env.COOKIE_EXPIRES_IN,
     });
     res
       .cookie('token', token, {
         httpOnly: true,
         secure: true,
         sameSite: 'none',
-        maxAge: process.env.COOKIE_EXPIRES_IN ? parseInt(process.env.COOKIE_EXPIRES_IN, 10) : 0,
+        maxAge: process.env.MAX_AGE_EXPIRES_IN ? parseInt(process.env.MAX_AGE_EXPIRES_IN, 10) : 0,
       })
       .status(200)
       .json({
