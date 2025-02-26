@@ -7,7 +7,7 @@ const updateProductValidationSchema = z.object({
   description: z.string().nonempty().optional(),
   price: z.number().positive().optional(),
   discount: z.number().int().min(0).max(100).optional().optional(),
-  stock: z.number().int().min(0).optional().optional(),
+  stock: z.boolean().optional(),
   images: z.array(z.string().url()).nonempty().optional(),
   is_featured: z.boolean().optional().optional(),
   is_upcoming: z.boolean().optional().optional(),

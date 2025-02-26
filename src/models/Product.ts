@@ -6,7 +6,7 @@ interface IProduct extends Document {
   description: string;
   price: number;
   discount: number;
-  stock: number;
+  stock: boolean;
   images: string[];
   is_featured: boolean;
   is_upcoming: boolean;
@@ -31,7 +31,7 @@ const productSchema = new Schema(
     description: { type: String, required: true },
     price: { type: Number, required: true },
     discount: { type: Number, required: true },
-    stock: { type: Number, default: 0 },
+    stock: { type: Number, default: true },
     images: { type: [String], required: true },
     is_featured: { type: Boolean, default: false },
     is_upcoming: { type: Boolean, default: false },
