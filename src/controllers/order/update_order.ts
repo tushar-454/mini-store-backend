@@ -15,10 +15,6 @@ const updateOrder = async (req: Request, res: Response, next: NextFunction): Pro
       });
       return;
     }
-    order.status = status ?? order.status;
-    order.is_deleted = is_deleted ?? order.is_deleted;
-    await order.save();
-
     // update product sell count
     if (status === 'delivered') {
       const productQuantities = order.line_items.reduce((acc, lineItem) => {
@@ -39,7 +35,29 @@ const updateOrder = async (req: Request, res: Response, next: NextFunction): Pro
       });
       await Promise.all(updateProductPromises);
     }
+    if (status !== 'delivered' && order.status === 'delivered') {
+      console.log('callsing');
+      const productQuantities = order.line_items.reduce((acc, lineItem) => {
+        const productId = lineItem.product_id.toString();
+        if (!acc[productId]) {
+          acc[productId] = 0;
+        }
+        acc[productId] += lineItem.quantity;
+        return acc;
+      }, {} as Record<string, number>);
 
+      const updateProductPromises = Object.entries(productQuantities).map(async ([productId, quantity]) => {
+        const product = await findProductByProperty('_id', productId);
+        if (product) {
+          product.sell_count -= quantity;
+          return product.save();
+        }
+      });
+      await Promise.all(updateProductPromises);
+    }
+    order.status = status ?? order.status;
+    order.is_deleted = is_deleted ?? order.is_deleted;
+    await order.save();
     res.status(200).json({
       success: true,
       message: 'Resource updated',
