@@ -32,7 +32,7 @@ const updateProduct = async (req: Request, res: Response, next: NextFunction): P
     await product.save();
 
     res.status(200).json({
-      status: true,
+      success: true,
       message: 'Resource updated',
     });
   } catch (error) {

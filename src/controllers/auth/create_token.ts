@@ -18,7 +18,7 @@ const createToken = async (req: Request, res: Response, next: NextFunction) => {
       .cookie('token', token, {
         httpOnly: true,
         secure: true,
-        sameSite: 'lax',
+        sameSite: 'none',
         maxAge: process.env.MAX_AGE_EXPIRES_IN ? parseInt(process.env.MAX_AGE_EXPIRES_IN, 10) : 0,
       })
       .status(200)
