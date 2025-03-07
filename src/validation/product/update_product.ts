@@ -18,7 +18,7 @@ const updateProductValidationSchema = z.object({
   variants: z
     .array(
       z.object({
-        _id: z.string(),
+        _id: z.string().optional(),
         name: z.string().nonempty(),
         price: z.number().positive(),
       })

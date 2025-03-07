@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import mongoose from 'mongoose';
 import { findProductByProperty } from '../../services/product/find_product_by_property';
 import { UpdateProductInput } from '../../validation/product/update_product';
 
@@ -27,7 +28,15 @@ const updateProduct = async (req: Request, res: Response, next: NextFunction): P
     product.price = price ?? product.price;
     product.status = status ?? product.status;
     product.stock = stock ?? product.stock;
-    product.variants = variants ?? product.variants;
+    product.variants =
+      variants?.map((variant) => {
+        const { _id, name, price } = variant;
+        return {
+          _id: _id || new mongoose.Types.ObjectId().toString(),
+          name: name,
+          price: price,
+        };
+      }) ?? product.variants;
     product.slug = name ? name.toLowerCase().replace(/ /g, '-') : product.slug;
     await product.save();
 
